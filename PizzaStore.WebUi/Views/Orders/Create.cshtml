@@ -1,0 +1,65 @@
+﻿@model CreateOrderViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+
+            <h3>Order Items</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pizza</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.PizzaName</td>
+                            <td>
+                                <input asp-for="@item.Quantity" class="form-control" />
+                                <input asp-for="@item.PizzaId" type="hidden" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label for="SelectedPizzaId">Select Pizza:</label>
+                <select asp-for="SelectedPizzaId" asp-items="Model.PizzaList" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewPizzaQuantity" class="control-label"></label>
+                <input asp-for="NewPizzaQuantity" class="form-control" />
+                <span asp-validation-for="NewPizzaQuantity" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="addPizza">Add Pizza</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

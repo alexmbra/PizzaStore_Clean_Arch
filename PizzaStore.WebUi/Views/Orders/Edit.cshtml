@@ -1,0 +1,59 @@
+﻿@model PizzaStore.Application.DTOs.OrderDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Order</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+            </div>
+
+            <h3>Order Items</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pizza</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.OrderItems.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model.OrderItems[i].Pizza?.Name</td>
+                            <td>
+                                <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" />
+                                <input type="hidden" asp-for="@Model.OrderItems[i].OrderId" />
+                                <input type="hidden" asp-for="@Model.OrderItems[i].PizzaId" />
+                                <input type="hidden" asp-for="@Model.OrderItems[i].Id" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
